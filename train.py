@@ -742,7 +742,7 @@ def plot_results(
 ) -> None:
     labels = ["$\\Gamma$", "X", "M", "$\\Gamma$"]
 
-    plt.figure(figsize=(13, 7))
+    plt.figure(figsize=(16, 8))
 
     for band_id in range(omega_numerical.shape[1]):
         plt.plot(
@@ -756,105 +756,88 @@ def plot_results(
         plt.plot(
             distances,
             omega_pinn[:, band_id],
-            linewidth=2.0,
+            linewidth=2.2,
             label=f"PINN band {band_id + 1}",
         )
 
     for left_band, right_band, lower_max, upper_min, gap in band_gaps:
         if gap <= 0.0:
             continue
-
-        plt.axhspan(
-            lower_max,
-            upper_min,
-            alpha=0.18,
-            label=f"band gap {left_band}-{right_band}",
-        )
+        plt.axhspan(lower_max, upper_min, alpha=0.18, label=f"band gap {left_band}-{right_band}")
 
     for tick in ticks:
         plt.axvline(tick, linewidth=1.0, alpha=0.35)
 
-    plt.xticks(ticks, labels, fontsize=15)
-    plt.yticks(fontsize=14)
-    plt.xlabel("$\\Gamma - X - M - \\Gamma$", fontsize=16)
-    plt.ylabel("$\\omega$", fontsize=18)
-    plt.title("PINN and brentq baseline", fontsize=18)
-
+    plt.xticks(ticks, labels, fontsize=18)
+    plt.yticks(fontsize=16)
+    plt.xlabel("$\\Gamma - X - M - \\Gamma$", fontsize=20)
+    plt.ylabel("$\\omega$", fontsize=20)
+    plt.title("PINN and brentq baseline", fontsize=20)
     plt.grid(alpha=0.3)
-    plt.legend(
-        fontsize=11,
-        ncol=2,
-        frameon=True,
-    )
+    plt.legend(fontsize=14, ncol=2, frameon=True)
     plt.tight_layout()
     plt.savefig(plots_dir / "bands_pinn_brentq.png", dpi=300)
     plt.close()
 
-    plt.figure(figsize=(13, 6))
+    plt.figure(figsize=(16, 8))
 
     for band_id in range(omega_numerical.shape[1]):
         plt.plot(
             distances,
             np.abs(omega_pinn[:, band_id] - omega_numerical[:, band_id]),
-            linewidth=2.0,
+            linewidth=2.2,
             label=f"band {band_id + 1}",
         )
 
     for tick in ticks:
         plt.axvline(tick, linewidth=1.0, alpha=0.35)
 
-    plt.xticks(ticks, labels, fontsize=15)
-    plt.yticks(fontsize=14)
-    plt.xlabel("$\\Gamma - X - M - \\Gamma$", fontsize=16)
-    plt.ylabel("$|\\omega_{PINN} - \\omega_{brentq}|$", fontsize=18)
-    plt.title("Absolute error", fontsize=18)
-
+    plt.xticks(ticks, labels, fontsize=18)
+    plt.yticks(fontsize=16)
+    plt.xlabel("$\\Gamma - X - M - \\Gamma$", fontsize=20)
+    plt.ylabel("$|\\omega_{PINN} - \\omega_{brentq}|$", fontsize=20)
+    plt.title("Absolute error", fontsize=20)
     plt.grid(alpha=0.3)
-    plt.legend(fontsize=12)
+    plt.legend(fontsize=14)
     plt.tight_layout()
     plt.savefig(plots_dir / "error.png", dpi=300)
     plt.close()
 
-    plt.figure(figsize=(12, 6))
-
+    plt.figure(figsize=(16, 8))
     steps = np.arange(len(history))
 
     plt.semilogy(
         steps,
         [row["loss"] for row in history],
-        linewidth=2.0,
+        linewidth=2.2,
         label="total",
     )
-
     plt.semilogy(
         steps,
         [row["data_loss"] for row in history],
-        linewidth=2.0,
+        linewidth=2.2,
         label="data",
     )
-
     plt.semilogy(
         steps,
         [row["physics_loss"] for row in history],
-        linewidth=2.0,
+        linewidth=2.2,
         label="physics",
     )
-
     plt.semilogy(
         steps,
         [row["smooth_loss"] for row in history],
-        linewidth=2.0,
+        linewidth=2.2,
         label="smooth",
     )
 
-    plt.xticks(fontsize=14)
-    plt.yticks(fontsize=14)
-    plt.xlabel("Step", fontsize=16)
-    plt.ylabel("Loss", fontsize=18)
-    plt.title("PINN training history", fontsize=18)
-
+    plt.xticks(fontsize=16)
+    plt.yticks(fontsize=16)
+    plt.xlabel("Step", fontsize=20)
+    plt.ylabel("Loss", fontsize=20)
+    plt.title("PINN training history", fontsize=20)
     plt.grid(alpha=0.3)
-    plt.legend(fontsize=12)
+    plt.legend(fontsize=14)
     plt.tight_layout()
     plt.savefig(plots_dir / "loss.png", dpi=300)
     plt.close()
